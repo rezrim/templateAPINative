@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Form, H1, Item, Label, Input, Header, Content, Button, Card, CardItem, Body, Text, Left, Right, Fab, Icon } from 'native-base';
+import { Container, Form, H1, Item, Label, Input, Header, Content, Button, Card, CardItem, Body, Text, Left, Right, Fab } from 'native-base';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import {View, ScrollView} from 'react-native'
 
 function App(props) {
@@ -21,13 +22,7 @@ function App(props) {
     }else if(val==="edit"){
       setAction("edit")
       setId(valId)
-      fetch('https://jsonplaceholder.typicode.com/posts/'+valId)
-      .then(res => res.json())
-      .then(val => {
-        setJudul(val[1].title)
-        setDeskripsi(val[1].body)
-        setDataDetail(val)
-      })
+      //Fetch Update
     }else{
       setAction("")
       dataNull()
@@ -35,58 +30,19 @@ function App(props) {
   }
 
   const showData = () => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(res => res.json())
-    .then(val => setData(val))
+   console.log("Fetch Show Data")
   }
 
   const saveData = () => {
-    fetch('https://jsonplaceholder.typicode.com/posts',{
-      method:'POST',
-      body:{
-        title:judul,
-        body:deskripsi,
-        userId
-      },
-      headers:{
-        "Content-type":"application/json; charset=UTF-8",
-      }
-    })
-    .then(res => res.json())
-    .then(val => console.log(val))
-    .then(() => {
-      setModal(false)
-      dataNull()
-    })
+    console.log("Save Data")
   }
 
   const updateData = () => {
-    fetch('https://jsonplaceholder.typicode.com/posts/'+id,{
-      method:'PUT',
-      body:{
-        id,
-        title:judul,
-        body:deskripsi,
-        userId
-      },
-      headers:{
-        "Content-type":"application/json; charset=UTF-8",
-      }
-    })
-    .then(res => res.json())
-    .then(val => console.log(val))
-    .then(() => {
-      setModal(false)
-      dataNull()
-    })
+    console.log("Update Data")
   }
 
   const deleteData = (id) => {
-    fetch('https://jsonplaceholder.typicode.com/posts/'+id, {
-      method: 'DELETE'
-    })
-    .then(res => res.json())
-    .then(val => console.log(val))
+    console.log("Delete Data")
   }
 
   const dataNull = () => {
@@ -95,7 +51,7 @@ function App(props) {
   }
 
   React.useEffect(()=>{
-    showData()
+    console.log("Auto Play")
   },[])
 
   return (
@@ -109,29 +65,29 @@ function App(props) {
         <Content>  
 
     { !modal ? ( 
-        data.map((val, i) => (
-        <Card key={i}>
+       
+        <Card>
           <CardItem header bordered>
-            <Text>{val.id}</Text>
+            <Text>ID Data</Text>
           </CardItem>
 
           <CardItem>
             <Body>
-              <H1>{val.title}</H1>
-              <Text>{val.body}</Text>
+              <H1>Judul Data</H1>
+              <Text>Deskripsi Data</Text>
             </Body>
           </CardItem>
 
           <CardItem footer bordered>
             <Left>
-              <Button danger onPress={() => deleteData(val.id)}><Text>Hapus</Text></Button>
+              <Button danger onPress={() => deleteData(1)}><Text>Hapus</Text></Button>
             </Left>
             <Right>
               <Button info onPress={()=> modalClick("edit")}><Text>Edit</Text></Button>
             </Right>
           </CardItem>
         </Card>
-        ))
+        
     ):(
 
         <Card>
@@ -172,9 +128,9 @@ function App(props) {
           style={{ backgroundColor: '#5067FF' }}
           position="bottomRight"
           onPress={()=> modalClick("add")}>
-          <Icon name="share" />
+          <Text>+</Text>
         </Fab>
-
+        
       </Container>
     </ScrollView>
   );
